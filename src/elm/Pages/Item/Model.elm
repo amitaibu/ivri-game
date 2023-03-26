@@ -3,10 +3,16 @@ module Pages.Item.Model exposing (..)
 import Dict exposing (Dict)
 
 
+type CountryState
+    = Independent
+    | Conquered
+
+
 type alias Country =
     { name : String
     , population : Int
     , flag : String
+    , countryState : CountryState
     }
 
 
@@ -18,9 +24,27 @@ type alias Player =
 
 countries : Dict Int Country
 countries =
-    [ ( 1, { name = "Israel", population = 6, flag = "🇮🇱" } )
-    , ( 2, { name = "Canada", population = 10, flag = "🇨🇦" } )
-    , ( 3, { name = "France", population = 20, flag = "🇫🇷" } )
+    [ ( 1
+      , { name = "Israel"
+        , population = 6
+        , flag = "🇮🇱"
+        , countryState = Independent
+        }
+      )
+    , ( 2
+      , { name = "Canada"
+        , population = 10
+        , flag = "🇨🇦"
+        , countryState = Independent
+        }
+      )
+    , ( 3
+      , { name = "France"
+        , population = 20
+        , flag = "🇫🇷"
+        , countryState = Conquered
+        }
+      )
     ]
         |> Dict.fromList
 

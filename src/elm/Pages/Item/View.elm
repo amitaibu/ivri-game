@@ -5,7 +5,7 @@ import Backend.Model exposing (ModelBackend)
 import Dict
 import Html exposing (..)
 import Html.Attributes exposing (class)
-import Pages.Item.Model exposing (Model, Msg(..))
+import Pages.Item.Model exposing (Country, CountryState(..), Model, Msg(..))
 
 
 view : Language -> ModelBackend -> Model -> Html Msg
@@ -28,8 +28,24 @@ viewCountries : Model -> Html Msg
 viewCountries model =
     model.countries
         |> Dict.values
-        |> List.map (\country -> li [] [ text country.flag, text " ", text country.name ])
+        |> List.map (\country -> li [] (viewCountry country))
         |> ol [ class "list-decimal" ]
+
+
+viewCountry : Country -> List (Html Msg)
+viewCountry country =
+    let
+        name =
+            [ text country.flag, text " ", text country.name, text " " ]
+    in
+    case country.countryState of
+        Independent ->
+            [ text "🕊️ (Independent)" ]
+                |> List.append name
+
+        Conquered ->
+            [ text "⚔️ (Conquered)" ]
+                |> List.append name
 
 
 viewPlayers : Model -> Html Msg
