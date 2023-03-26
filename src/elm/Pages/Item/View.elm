@@ -12,7 +12,7 @@ import Pages.Item.Model exposing (Country, CountryState(..), Model, Msg(..))
 view : Language -> ModelBackend -> Model -> Html Msg
 view language modelBackend model =
     div [ class "bg-gray-50 py-10" ]
-        [ div [ class "grid grid-rows-2 max-w-3xl mx-auto" ]
+        [ div [ class "grid grid-cols-2 max-w-3xl mx-auto" ]
             [ div []
                 [ h2 [ class "font-bold" ] [ text "Countries" ]
                 , div [] [ viewCountries model ]
@@ -29,8 +29,8 @@ viewCountries : Model -> Html Msg
 viewCountries model =
     model.countries
         |> Dict.toList
-        |> List.map (\( countryId, country ) -> li [] (viewCountry ( countryId, country )))
-        |> ol [ class "list-decimal" ]
+        |> List.map (\( countryId, country ) -> li [ class "flex flex-row gap-4 items-center" ] (viewCountry ( countryId, country )))
+        |> ol [ class "list-decimal flex flex-col gap-y-6" ]
 
 
 viewCountry : ( Int, Country ) -> List (Html Msg)
@@ -41,11 +41,11 @@ viewCountry ( countryId, country ) =
     in
     case country.countryState of
         Independent ->
-            [ text "🕊️ (Independent)", viewCountryStateButton ( countryId, country ) ]
+            [ text "🕊️", viewCountryStateButton ( countryId, country ) ]
                 |> List.append name
 
         Conquered ->
-            [ text "⚔️ (Conquered)", viewCountryStateButton ( countryId, country ) ]
+            [ text "⚔️", viewCountryStateButton ( countryId, country ) ]
                 |> List.append name
 
 
@@ -54,14 +54,14 @@ viewCountryStateButton ( countryId, country ) =
     case country.countryState of
         Independent ->
             button
-                [ class "bg-red-300 p-2"
+                [ class "bg-red-300 p-2 rounded-full border border-red-400"
                 , onClick <| SetCountryState countryId Conquered
                 ]
                 [ text "Change to Conquered" ]
 
         Conquered ->
             button
-                [ class "bg-green-300 p-2"
+                [ class "bg-green-300 p-2 rounded-full border border-green-400"
                 , onClick <| SetCountryState countryId Independent
                 ]
                 [ text "Change to Independent" ]
