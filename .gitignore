@@ -51,4 +51,3 @@ elm-stuff/*
 .parcel-cache
 package-lock.json
 package.json
-dist
