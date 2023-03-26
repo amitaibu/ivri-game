@@ -72,7 +72,7 @@ emptyModel =
 
 
 type Msg
-    = NoOp
+    = SetCountryState Int CountryState
 
 
 juji : Int
