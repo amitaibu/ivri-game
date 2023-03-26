@@ -11,8 +11,8 @@ import Pages.Item.Model exposing (Country, CountryState(..), Model, Msg(..))
 
 view : Language -> ModelBackend -> Model -> Html Msg
 view language modelBackend model =
-    div [ class "bg-gray-50 py-10" ]
-        [ div [ class "grid grid-cols-2 max-w-3xl mx-auto" ]
+    div [ class "bg-gray-50 px-5 md:px-10 py-10" ]
+        [ div [ class "grid grid-cols-1 md:grid-cols-2 gap-8 md:max-w-3xl mx-auto" ]
             [ div []
                 [ h2 [ class "font-bold" ] [ text "Countries" ]
                 , div [] [ viewCountries model ]
