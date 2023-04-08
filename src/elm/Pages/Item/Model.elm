@@ -5,7 +5,7 @@ import Dict exposing (Dict)
 
 type CountryState
     = Independent
-    | Conquered
+    | Conquered Int
 
 
 type alias Country =
@@ -42,7 +42,7 @@ countries =
       , { name = "France"
         , population = 20
         , flag = "🇫🇷"
-        , countryState = Conquered
+        , countryState = Conquered 1
         }
       )
     ]
@@ -73,42 +73,3 @@ emptyModel =
 
 type Msg
     = SetCountryState Int CountryState
-
-
-juji : Int
-juji =
-    5
-
-
-ivri : String
-ivri =
-    "I love Daddy"
-
-
-imushHappy : Bool
-imushHappy =
-    True
-
-
-imsushMad : Bool
-imsushMad =
-    False
-
-
-abushCannotDecide : List Int
-abushCannotDecide =
-    [ 1, 5, 10, 100 ]
-
-
-q1 : List String
-q1 =
-    [ "hi", "ivri", "shalom" ]
-
-
-
---countries : List ( Int, String )
---countries =
---    [ ( 1, "Israel" )
---    , ( 2, "Canada" )
---    , ( 3, "France" )
---    ]
