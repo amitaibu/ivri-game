@@ -24,7 +24,6 @@ view language modelBackend model =
                     ]
                 ]
             ]
-        , div [] [ text <| "Selected player: " ++ Debug.toString model.selectedPlayer ]
         ]
 
 
