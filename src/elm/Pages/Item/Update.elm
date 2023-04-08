@@ -36,3 +36,10 @@ update modelBackend msg model =
                         Cmd.none
                         noError
                         []
+
+        SetSelectedPlayer maybeSelectedPlayer ->
+            PagesReturn
+                { model | selectedPlayer = maybeSelectedPlayer }
+                Cmd.none
+                noError
+                []

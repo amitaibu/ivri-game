@@ -61,6 +61,7 @@ players =
 type alias Model =
     { countries : Dict Int Country
     , players : Dict Int Player
+    , selectedPlayer : Maybe Int
     }
 
 
@@ -68,8 +69,10 @@ emptyModel : Model
 emptyModel =
     { countries = countries
     , players = players
+    , selectedPlayer = Nothing
     }
 
 
 type Msg
     = SetCountryState Int CountryState
+    | SetSelectedPlayer (Maybe Int)

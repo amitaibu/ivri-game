@@ -4,24 +4,27 @@ import App.Types exposing (Language)
 import Backend.Model exposing (ModelBackend)
 import Dict
 import Html exposing (..)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, classList)
 import Html.Events exposing (onClick)
-import Pages.Item.Model exposing (Country, CountryState(..), Model, Msg(..), players)
+import Pages.Item.Model exposing (Country, CountryState(..), Model, Msg(..), Player)
 
 
 view : Language -> ModelBackend -> Model -> Html Msg
 view language modelBackend model =
-    div [ class "bg-gray-50 px-5 md:px-10 py-10" ]
-        [ div [ class "grid grid-cols-1 md:grid-cols-2 gap-8 md:max-w-3xl mx-auto" ]
-            [ div []
-                [ h2 [ class "font-bold" ] [ text "Countries" ]
-                , div [] [ viewCountries model ]
-                ]
-            , div []
-                [ h2 [ class "font-bold" ] [ text "Players" ]
-                , div [] [ viewPlayers model ]
+    div []
+        [ div [ class "bg-gray-50 px-5 md:px-10 py-10" ]
+            [ div [ class "grid grid-cols-1 md:grid-cols-2 gap-8 md:max-w-3xl mx-auto" ]
+                [ div []
+                    [ h2 [ class "font-bold" ] [ text "Countries" ]
+                    , div [] [ viewCountries model ]
+                    ]
+                , div []
+                    [ h2 [ class "font-bold" ] [ text "Players" ]
+                    , div [] [ viewPlayers model ]
+                    ]
                 ]
             ]
+        , div [] [ text <| "Selected player: " ++ Debug.toString model.selectedPlayer ]
         ]
 
 
@@ -29,12 +32,12 @@ viewCountries : Model -> Html Msg
 viewCountries model =
     model.countries
         |> Dict.toList
-        |> List.map (\( countryId, country ) -> li [ class "flex flex-row gap-4 items-center" ] (viewCountry ( countryId, country )))
+        |> List.map (\( countryId, country ) -> li [ class "flex flex-row gap-4 items-center" ] (viewCountry model ( countryId, country )))
         |> ol [ class "list-decimal flex flex-col gap-y-6" ]
 
 
-viewCountry : ( Int, Country ) -> List (Html Msg)
-viewCountry ( countryId, country ) =
+viewCountry : Model -> ( Int, Country ) -> List (Html Msg)
+viewCountry model ( countryId, country ) =
     let
         name =
             [ text country.flag, text " ", text country.name, text " " ]
@@ -47,7 +50,7 @@ viewCountry ( countryId, country ) =
         Conquered playerId ->
             let
                 playerName =
-                    Dict.get playerId players
+                    Dict.get playerId model.players
                         |> Maybe.map (\player -> player.name)
                         |> Maybe.withDefault ""
             in
@@ -76,6 +79,19 @@ viewCountryStateButton ( countryId, country ) =
 viewPlayers : Model -> Html Msg
 viewPlayers model =
     model.players
-        |> Dict.values
-        |> List.map (\player -> li [] [ text player.name ])
+        |> Dict.toList
+        |> List.map (\( playerId, player ) -> li [] [ viewPlayerButton model.selectedPlayer ( playerId, player ) ])
         |> ol [ class "list-decimal" ]
+
+
+viewPlayerButton : Maybe Int -> ( Int, Player ) -> Html Msg
+viewPlayerButton maybeSelectedPlayer ( playerId, player ) =
+    button
+        [ classList
+            [ ( "py-2 px-4 rounded-full border border-green-400", True )
+            , ( "bg-blue-300", maybeSelectedPlayer == Just playerId )
+            , ( "bg-green-300", maybeSelectedPlayer /= Just playerId )
+            ]
+        , onClick <| SetSelectedPlayer <| Just playerId
+        ]
+        [ text player.name ]
