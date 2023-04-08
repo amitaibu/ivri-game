@@ -44,7 +44,7 @@ viewCountry model ( countryId, country ) =
     in
     case country.countryState of
         Independent ->
-            [ text "🕊️", viewCountryStateButton ( countryId, country ) ]
+            [ text "🕊️", viewCountryStateButton model.selectedPlayer ( countryId, country ) ]
                 |> List.append name
 
         Conquered playerId ->
@@ -54,19 +54,24 @@ viewCountry model ( countryId, country ) =
                         |> Maybe.map (\player -> player.name)
                         |> Maybe.withDefault ""
             in
-            [ text <| "⚔️ - Conquered by " ++ playerName, viewCountryStateButton ( countryId, country ) ]
+            [ text <| "⚔️ - Conquered by " ++ playerName, viewCountryStateButton model.selectedPlayer ( countryId, country ) ]
                 |> List.append name
 
 
-viewCountryStateButton : ( Int, Country ) -> Html Msg
-viewCountryStateButton ( countryId, country ) =
+viewCountryStateButton : Maybe Int -> ( Int, Country ) -> Html Msg
+viewCountryStateButton maybeSelectedPlayer ( countryId, country ) =
     case country.countryState of
         Independent ->
-            button
-                [ class "bg-red-300 py-2 px-4 rounded-full border border-red-400"
-                , onClick <| SetCountryState countryId <| Conquered 1
-                ]
-                [ text "Change to Conquered" ]
+            case maybeSelectedPlayer of
+                Nothing ->
+                    text "Please select a player"
+
+                Just playerId ->
+                    button
+                        [ class "bg-red-300 py-2 px-4 rounded-full border border-red-400"
+                        , onClick <| SetCountryState countryId <| Conquered playerId
+                        ]
+                        [ text "Change to Conquered" ]
 
         Conquered playerId ->
             button

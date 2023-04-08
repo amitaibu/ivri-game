@@ -42,7 +42,7 @@ countries =
       , { name = "France"
         , population = 20
         , flag = "🇫🇷"
-        , countryState = Conquered 1
+        , countryState = Independent
         }
       )
     ]
